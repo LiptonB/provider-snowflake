@@ -1,4 +1,4 @@
-module github.com/upbound/upjet-provider-template
+module github.com/LiptonB/provider-snowflake
 
 go 1.19
 
