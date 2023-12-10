@@ -1,4 +1,4 @@
-apiVersion: snowflake.upbound.io/v1beta1
+apiVersion: snowflake.benjaminlipton.com/v1alpha1
 kind: ProviderConfig
 metadata:
   name: default
