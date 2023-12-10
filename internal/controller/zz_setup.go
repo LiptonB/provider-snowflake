@@ -9,16 +9,16 @@ import (
 
 	"github.com/crossplane/upjet/pkg/controller"
 
-	resource "github.com/LiptonB/provider-snowflake/internal/controller/null/resource"
 	providerconfig "github.com/LiptonB/provider-snowflake/internal/controller/providerconfig"
+	warehouse "github.com/LiptonB/provider-snowflake/internal/controller/snowflake/warehouse"
 )
 
 // Setup creates all controllers with the supplied logger and adds them to
 // the supplied manager.
 func Setup(mgr ctrl.Manager, o controller.Options) error {
 	for _, setup := range []func(ctrl.Manager, controller.Options) error{
-		resource.Setup,
 		providerconfig.Setup,
+		warehouse.Setup,
 	} {
 		if err := setup(mgr, o); err != nil {
 			return err

@@ -14,7 +14,7 @@ package apis
 import (
 	"k8s.io/apimachinery/pkg/runtime"
 
-	v1alpha1 "github.com/LiptonB/provider-snowflake/apis/null/v1alpha1"
+	v1alpha1 "github.com/LiptonB/provider-snowflake/apis/snowflake/v1alpha1"
 	v1alpha1apis "github.com/LiptonB/provider-snowflake/apis/v1alpha1"
 	v1beta1 "github.com/LiptonB/provider-snowflake/apis/v1beta1"
 )
