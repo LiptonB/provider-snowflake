@@ -6,12 +6,12 @@ PROJECT_REPO ?= github.com/LiptonB/$(PROJECT_NAME)
 
 export TERRAFORM_VERSION ?= 1.2.1
 
-export TERRAFORM_PROVIDER_SOURCE ?= hashicorp/null
-export TERRAFORM_PROVIDER_REPO ?= https://github.com/hashicorp/terraform-provider-null
-export TERRAFORM_PROVIDER_VERSION ?= 3.1.0
-export TERRAFORM_PROVIDER_DOWNLOAD_NAME ?= terraform-provider-null
-export TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX ?= https://releases.hashicorp.com/$(TERRAFORM_PROVIDER_DOWNLOAD_NAME)/$(TERRAFORM_PROVIDER_VERSION)
-export TERRAFORM_NATIVE_PROVIDER_BINARY ?= terraform-provider-null_v3.1.0_x5
+export TERRAFORM_PROVIDER_SOURCE ?= Snowflake-Labs/snowflake
+export TERRAFORM_PROVIDER_REPO ?= https://github.com/Snowflake-Labs/terraform-provider-snowflake
+export TERRAFORM_PROVIDER_VERSION ?= 0.78.0
+export TERRAFORM_PROVIDER_DOWNLOAD_NAME ?= terraform-provider-snowflake
+export TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX ?= ${TERRAFORM_PROVIDER_REPO}/releases/download/${TERRAFORM_PROVIDER_VERSION}
+export TERRAFORM_NATIVE_PROVIDER_BINARY ?= ${TERRAFORM_PROVIDER_DOWNLOAD_NAME}_v${TERRAFORM_PROVIDER_VERSION}
 export TERRAFORM_DOCS_PATH ?= docs/resources
 
 
