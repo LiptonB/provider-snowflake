@@ -1,0 +1,11 @@
+apiVersion: snowflake.benjaminlipton.com/v1alpha1
+kind: Warehouse
+metadata:
+  name: example-warehouse
+spec:
+  forProvider:
+    comment: An example warehouse
+    warehouseSize: x-small
+    initiallySuspended: true
+  providerConfigRef:
+    name: default
