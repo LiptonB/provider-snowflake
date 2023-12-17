@@ -64,7 +64,7 @@ func TerraformSetupBuilder(version, providerSource, providerVersion string) terr
 
 		ps.Configuration = map[string]any{
 			"account":  creds["account"],
-			"username": creds["username"],
+			"user":     creds["user"],
 			"password": creds["password"],
 		}
 
