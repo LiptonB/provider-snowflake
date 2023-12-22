@@ -10,6 +10,7 @@ import "github.com/crossplane/upjet/pkg/config"
 // provider.
 var ExternalNameConfigs = map[string]config.ExternalName{
 	"snowflake_database":  config.NameAsIdentifier,
+	"snowflake_schema":    config.TemplatedStringAsIdentifier("", "{{ .parameters.database }}|{{ .external_name }}"),
 	"snowflake_warehouse": config.NameAsIdentifier,
 }
 

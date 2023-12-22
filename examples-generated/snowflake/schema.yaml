@@ -1,0 +1,16 @@
+apiVersion: snowflake.benjaminlipton.com/v1alpha1
+kind: Schema
+metadata:
+  annotations:
+    meta.upbound.io/example-id: snowflake/v1alpha1/schema
+  labels:
+    testing.upbound.io/example-name: schema
+  name: schema
+spec:
+  forProvider:
+    comment: A schema.
+    dataRetentionDays: 1
+    database: database
+    isManaged: false
+    isTransient: false
+    name: schema
