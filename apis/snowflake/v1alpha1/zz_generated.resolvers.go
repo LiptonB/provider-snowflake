@@ -37,3 +37,45 @@ func (mg *Schema) ResolveReferences(ctx context.Context, c client.Reader) error 
 
 	return nil
 }
+
+// ResolveReferences of this View.
+func (mg *View) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Database),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.DatabaseRef,
+		Selector:     mg.Spec.ForProvider.DatabaseSelector,
+		To: reference.To{
+			List:    &DatabaseList{},
+			Managed: &Database{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.Database")
+	}
+	mg.Spec.ForProvider.Database = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.DatabaseRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Schema),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.SchemaRef,
+		Selector:     mg.Spec.ForProvider.SchemaSelector,
+		To: reference.To{
+			List:    &SchemaList{},
+			Managed: &Schema{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.Schema")
+	}
+	mg.Spec.ForProvider.Schema = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.SchemaRef = rsp.ResolvedReference
+
+	return nil
+}

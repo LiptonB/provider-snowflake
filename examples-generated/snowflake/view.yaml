@@ -1,0 +1,21 @@
+apiVersion: snowflake.benjaminlipton.com/v1alpha1
+kind: View
+metadata:
+  annotations:
+    meta.upbound.io/example-id: snowflake/v1alpha1/view
+  labels:
+    testing.upbound.io/example-name: view
+  name: view
+spec:
+  forProvider:
+    comment: comment
+    databaseSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    isSecure: false
+    orReplace: false
+    schemaSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    statement: |
+      select * from foo;

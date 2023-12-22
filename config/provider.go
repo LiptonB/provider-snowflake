@@ -12,6 +12,7 @@ import (
 
 	"github.com/LiptonB/provider-snowflake/config/database"
 	"github.com/LiptonB/provider-snowflake/config/schema"
+	"github.com/LiptonB/provider-snowflake/config/view"
 	"github.com/LiptonB/provider-snowflake/config/warehouse"
 )
 
@@ -40,6 +41,7 @@ func GetProvider() *ujconfig.Provider {
 		// add custom config functions
 		database.Configure,
 		schema.Configure,
+		view.Configure,
 		warehouse.Configure,
 	} {
 		configure(pc)
