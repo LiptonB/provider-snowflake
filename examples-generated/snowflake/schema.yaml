@@ -13,4 +13,3 @@ spec:
     database: database
     isManaged: false
     isTransient: false
-    name: schema

@@ -35,10 +35,6 @@ type SchemaInitParameters struct {
 	// Specifies a schema as transient. Transient schemas do not have a Fail-safe period so they do not incur additional storage costs once they leave Time Travel; however, this means they are also not protected by Fail-safe in the event of a data loss.
 	IsTransient *bool `json:"isTransient,omitempty" tf:"is_transient,omitempty"`
 
-	// (String) Specifies the identifier for the schema; must be unique for the database in which the schema is created.
-	// Specifies the identifier for the schema; must be unique for the database in which the schema is created.
-	Name *string `json:"name,omitempty" tf:"name,omitempty"`
-
 	// (Block List, Deprecated) Definitions of a tag to associate with the resource. (see below for nested schema)
 	// Definitions of a tag to associate with the resource.
 	Tag []TagInitParameters `json:"tag,omitempty" tf:"tag,omitempty"`
@@ -68,10 +64,6 @@ type SchemaObservation struct {
 	// safe period so they do not incur additional storage costs once they leave Time Travel; however, this means they are also not protected by Fail-safe in the event of a data loss.
 	// Specifies a schema as transient. Transient schemas do not have a Fail-safe period so they do not incur additional storage costs once they leave Time Travel; however, this means they are also not protected by Fail-safe in the event of a data loss.
 	IsTransient *bool `json:"isTransient,omitempty" tf:"is_transient,omitempty"`
-
-	// (String) Specifies the identifier for the schema; must be unique for the database in which the schema is created.
-	// Specifies the identifier for the schema; must be unique for the database in which the schema is created.
-	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// (Block List, Deprecated) Definitions of a tag to associate with the resource. (see below for nested schema)
 	// Definitions of a tag to associate with the resource.
@@ -104,11 +96,6 @@ type SchemaParameters struct {
 	// Specifies a schema as transient. Transient schemas do not have a Fail-safe period so they do not incur additional storage costs once they leave Time Travel; however, this means they are also not protected by Fail-safe in the event of a data loss.
 	// +kubebuilder:validation:Optional
 	IsTransient *bool `json:"isTransient,omitempty" tf:"is_transient,omitempty"`
-
-	// (String) Specifies the identifier for the schema; must be unique for the database in which the schema is created.
-	// Specifies the identifier for the schema; must be unique for the database in which the schema is created.
-	// +kubebuilder:validation:Optional
-	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// (Block List, Deprecated) Definitions of a tag to associate with the resource. (see below for nested schema)
 	// Definitions of a tag to associate with the resource.
@@ -208,9 +195,8 @@ type SchemaStatus struct {
 type Schema struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
-	Spec   SchemaSpec   `json:"spec"`
-	Status SchemaStatus `json:"status,omitempty"`
+	Spec              SchemaSpec   `json:"spec"`
+	Status            SchemaStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

@@ -443,11 +443,6 @@ func (in *SchemaInitParameters) DeepCopyInto(out *SchemaInitParameters) {
 		*out = new(bool)
 		**out = **in
 	}
-	if in.Name != nil {
-		in, out := &in.Name, &out.Name
-		*out = new(string)
-		**out = **in
-	}
 	if in.Tag != nil {
 		in, out := &in.Tag, &out.Tag
 		*out = make([]TagInitParameters, len(*in))
@@ -532,11 +527,6 @@ func (in *SchemaObservation) DeepCopyInto(out *SchemaObservation) {
 		*out = new(bool)
 		**out = **in
 	}
-	if in.Name != nil {
-		in, out := &in.Name, &out.Name
-		*out = new(string)
-		**out = **in
-	}
 	if in.Tag != nil {
 		in, out := &in.Tag, &out.Tag
 		*out = make([]TagObservation, len(*in))
@@ -582,11 +572,6 @@ func (in *SchemaParameters) DeepCopyInto(out *SchemaParameters) {
 	if in.IsTransient != nil {
 		in, out := &in.IsTransient, &out.IsTransient
 		*out = new(bool)
-		**out = **in
-	}
-	if in.Name != nil {
-		in, out := &in.Name, &out.Name
-		*out = new(string)
 		**out = **in
 	}
 	if in.Tag != nil {

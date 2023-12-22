@@ -98,12 +98,6 @@ spec:
                       once they leave Time Travel; however, this means they are also
                       not protected by Fail-safe in the event of a data loss.
                     type: boolean
-                  name:
-                    description: (String) Specifies the identifier for the schema;
-                      must be unique for the database in which the schema is created.
-                      Specifies the identifier for the schema; must be unique for
-                      the database in which the schema is created.
-                    type: string
                   tag:
                     description: (Block List, Deprecated) Definitions of a tag to
                       associate with the resource. (see below for nested schema) Definitions
@@ -174,12 +168,6 @@ spec:
                       once they leave Time Travel; however, this means they are also
                       not protected by Fail-safe in the event of a data loss.
                     type: boolean
-                  name:
-                    description: (String) Specifies the identifier for the schema;
-                      must be unique for the database in which the schema is created.
-                      Specifies the identifier for the schema; must be unique for
-                      the database in which the schema is created.
-                    type: string
                   tag:
                     description: (Block List, Deprecated) Definitions of a tag to
                       associate with the resource. (see below for nested schema) Definitions
@@ -363,11 +351,6 @@ spec:
             required:
             - forProvider
             type: object
-            x-kubernetes-validations:
-            - message: spec.forProvider.name is a required parameter
-              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
-                || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
-                || (has(self.initProvider) && has(self.initProvider.name))'
           status:
             description: SchemaStatus defines the observed state of Schema.
             properties:
@@ -408,12 +391,6 @@ spec:
                       once they leave Time Travel; however, this means they are also
                       not protected by Fail-safe in the event of a data loss.
                     type: boolean
-                  name:
-                    description: (String) Specifies the identifier for the schema;
-                      must be unique for the database in which the schema is created.
-                      Specifies the identifier for the schema; must be unique for
-                      the database in which the schema is created.
-                    type: string
                   tag:
                     description: (Block List, Deprecated) Definitions of a tag to
                       associate with the resource. (see below for nested schema) Definitions
