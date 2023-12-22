@@ -9,6 +9,7 @@ Copyright 2022 Upbound Inc.
 package v1alpha1
 
 import (
+	"github.com/crossplane/crossplane-runtime/apis/common/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -563,6 +564,16 @@ func (in *SchemaParameters) DeepCopyInto(out *SchemaParameters) {
 		in, out := &in.Database, &out.Database
 		*out = new(string)
 		**out = **in
+	}
+	if in.DatabaseRef != nil {
+		in, out := &in.DatabaseRef, &out.DatabaseRef
+		*out = new(v1.Reference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.DatabaseSelector != nil {
+		in, out := &in.DatabaseSelector, &out.DatabaseSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.IsManaged != nil {
 		in, out := &in.IsManaged, &out.IsManaged

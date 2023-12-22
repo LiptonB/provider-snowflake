@@ -84,8 +84,17 @@ type SchemaParameters struct {
 
 	// (String) The database in which to create the schema.
 	// The database in which to create the schema.
-	// +kubebuilder:validation:Required
-	Database *string `json:"database" tf:"database,omitempty"`
+	// +crossplane:generate:reference:type=github.com/LiptonB/provider-snowflake/apis/snowflake/v1alpha1.Database
+	// +kubebuilder:validation:Optional
+	Database *string `json:"database,omitempty" tf:"database,omitempty"`
+
+	// Reference to a Database in snowflake to populate database.
+	// +kubebuilder:validation:Optional
+	DatabaseRef *v1.Reference `json:"databaseRef,omitempty" tf:"-"`
+
+	// Selector for a Database in snowflake to populate database.
+	// +kubebuilder:validation:Optional
+	DatabaseSelector *v1.Selector `json:"databaseSelector,omitempty" tf:"-"`
 
 	// (Boolean) Specifies a managed schema. Managed access schemas centralize privilege management with the schema owner.
 	// Specifies a managed schema. Managed access schemas centralize privilege management with the schema owner.

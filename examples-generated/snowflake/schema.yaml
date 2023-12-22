@@ -10,6 +10,8 @@ spec:
   forProvider:
     comment: A schema.
     dataRetentionDays: 1
-    database: database
+    databaseSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
     isManaged: false
     isTransient: false
