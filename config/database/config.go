@@ -1,4 +1,4 @@
-package warehouse
+package database
 
 import "github.com/crossplane/upjet/pkg/config"
 

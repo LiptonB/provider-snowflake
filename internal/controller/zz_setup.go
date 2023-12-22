@@ -10,6 +10,7 @@ import (
 	"github.com/crossplane/upjet/pkg/controller"
 
 	providerconfig "github.com/LiptonB/provider-snowflake/internal/controller/providerconfig"
+	database "github.com/LiptonB/provider-snowflake/internal/controller/snowflake/database"
 	warehouse "github.com/LiptonB/provider-snowflake/internal/controller/snowflake/warehouse"
 )
 
@@ -18,6 +19,7 @@ import (
 func Setup(mgr ctrl.Manager, o controller.Options) error {
 	for _, setup := range []func(ctrl.Manager, controller.Options) error{
 		providerconfig.Setup,
+		database.Setup,
 		warehouse.Setup,
 	} {
 		if err := setup(mgr, o); err != nil {
