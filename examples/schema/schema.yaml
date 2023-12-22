@@ -1,0 +1,12 @@
+apiVersion: snowflake.benjaminlipton.com/v1alpha1
+kind: Schema
+metadata:
+  name: example-schema
+spec:
+  forProvider:
+    comment: A schema.
+    dataRetentionDays: 1
+    databaseRef:
+      name: example-db
+    isManaged: false
+    isTransient: false

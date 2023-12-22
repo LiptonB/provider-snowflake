@@ -1,7 +1,7 @@
 apiVersion: snowflake.benjaminlipton.com/v1alpha1
 kind: Database
 metadata:
-  name: simple
+  name: example-db
 spec:
   forProvider:
     comment: test comment

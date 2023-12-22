@@ -1,0 +1,15 @@
+apiVersion: snowflake.benjaminlipton.com/v1alpha1
+kind: View
+metadata:
+  name: example-view
+spec:
+  forProvider:
+    comment: comment
+    databaseRef:
+      name: example-db
+    isSecure: false
+    orReplace: false
+    schemaRef:
+      name: example-schema
+    statement: |
+      select * from foo;
