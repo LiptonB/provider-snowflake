@@ -1,0 +1,13 @@
+apiVersion: snowflake.benjaminlipton.com/v1alpha1
+kind: Share
+metadata:
+  annotations:
+    meta.upbound.io/example-id: snowflake/v1alpha1/share
+  labels:
+    testing.upbound.io/example-name: test
+  name: test
+spec:
+  forProvider:
+    accounts:
+    - organizationName.accountName
+    comment: cool comment

@@ -13,6 +13,7 @@ import (
 	"github.com/LiptonB/provider-snowflake/config/database"
 	"github.com/LiptonB/provider-snowflake/config/role"
 	"github.com/LiptonB/provider-snowflake/config/schema"
+	"github.com/LiptonB/provider-snowflake/config/share"
 	"github.com/LiptonB/provider-snowflake/config/view"
 	"github.com/LiptonB/provider-snowflake/config/warehouse"
 )
@@ -43,6 +44,7 @@ func GetProvider() *ujconfig.Provider {
 		database.Configure,
 		role.Configure,
 		schema.Configure,
+		share.Configure,
 		view.Configure,
 		warehouse.Configure,
 	} {

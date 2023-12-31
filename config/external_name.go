@@ -14,6 +14,7 @@ var ExternalNameConfigs = map[string]config.ExternalName{
 	"snowflake_view":      config.TemplatedStringAsIdentifier("name", "{{ .parameters.database }}|{{ .parameters.schema }}|{{ .external_name }}"),
 	"snowflake_warehouse": config.NameAsIdentifier,
 	"snowflake_role":      config.NameAsIdentifier,
+	"snowflake_share":     config.NameAsIdentifier,
 }
 
 // ExternalNameConfigurations applies all external name configs listed in the
