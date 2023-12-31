@@ -37,7 +37,7 @@ type SchemaInitParameters struct {
 
 	// (Block List, Deprecated) Definitions of a tag to associate with the resource. (see below for nested schema)
 	// Definitions of a tag to associate with the resource.
-	Tag []TagInitParameters `json:"tag,omitempty" tf:"tag,omitempty"`
+	Tag []SchemaTagInitParameters `json:"tag,omitempty" tf:"tag,omitempty"`
 }
 
 type SchemaObservation struct {
@@ -67,7 +67,7 @@ type SchemaObservation struct {
 
 	// (Block List, Deprecated) Definitions of a tag to associate with the resource. (see below for nested schema)
 	// Definitions of a tag to associate with the resource.
-	Tag []TagObservation `json:"tag,omitempty" tf:"tag,omitempty"`
+	Tag []SchemaTagObservation `json:"tag,omitempty" tf:"tag,omitempty"`
 }
 
 type SchemaParameters struct {
@@ -109,10 +109,10 @@ type SchemaParameters struct {
 	// (Block List, Deprecated) Definitions of a tag to associate with the resource. (see below for nested schema)
 	// Definitions of a tag to associate with the resource.
 	// +kubebuilder:validation:Optional
-	Tag []TagParameters `json:"tag,omitempty" tf:"tag,omitempty"`
+	Tag []SchemaTagParameters `json:"tag,omitempty" tf:"tag,omitempty"`
 }
 
-type TagInitParameters struct {
+type SchemaTagInitParameters struct {
 
 	// (String) Specifies the identifier for the schema; must be unique for the database in which the schema is created.
 	// Tag name, e.g. department.
@@ -127,7 +127,7 @@ type TagInitParameters struct {
 	Value *string `json:"value,omitempty" tf:"value,omitempty"`
 }
 
-type TagObservation struct {
+type SchemaTagObservation struct {
 
 	// (String) The database in which to create the schema.
 	// Name of the database that the tag was created in.
@@ -146,7 +146,7 @@ type TagObservation struct {
 	Value *string `json:"value,omitempty" tf:"value,omitempty"`
 }
 
-type TagParameters struct {
+type SchemaTagParameters struct {
 
 	// (String) The database in which to create the schema.
 	// Name of the database that the tag was created in.

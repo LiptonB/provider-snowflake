@@ -11,6 +11,7 @@ import (
 
 	providerconfig "github.com/LiptonB/provider-snowflake/internal/controller/providerconfig"
 	database "github.com/LiptonB/provider-snowflake/internal/controller/snowflake/database"
+	role "github.com/LiptonB/provider-snowflake/internal/controller/snowflake/role"
 	schema "github.com/LiptonB/provider-snowflake/internal/controller/snowflake/schema"
 	view "github.com/LiptonB/provider-snowflake/internal/controller/snowflake/view"
 	warehouse "github.com/LiptonB/provider-snowflake/internal/controller/snowflake/warehouse"
@@ -22,6 +23,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 	for _, setup := range []func(ctrl.Manager, controller.Options) error{
 		providerconfig.Setup,
 		database.Setup,
+		role.Setup,
 		schema.Setup,
 		view.Setup,
 		warehouse.Setup,

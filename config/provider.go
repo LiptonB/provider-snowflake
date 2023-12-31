@@ -11,6 +11,7 @@ import (
 	ujconfig "github.com/crossplane/upjet/pkg/config"
 
 	"github.com/LiptonB/provider-snowflake/config/database"
+	"github.com/LiptonB/provider-snowflake/config/role"
 	"github.com/LiptonB/provider-snowflake/config/schema"
 	"github.com/LiptonB/provider-snowflake/config/view"
 	"github.com/LiptonB/provider-snowflake/config/warehouse"
@@ -40,6 +41,7 @@ func GetProvider() *ujconfig.Provider {
 	for _, configure := range []func(provider *ujconfig.Provider){
 		// add custom config functions
 		database.Configure,
+		role.Configure,
 		schema.Configure,
 		view.Configure,
 		warehouse.Configure,

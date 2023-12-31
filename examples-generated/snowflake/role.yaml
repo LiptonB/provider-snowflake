@@ -1,0 +1,11 @@
+apiVersion: snowflake.benjaminlipton.com/v1alpha1
+kind: Role
+metadata:
+  annotations:
+    meta.upbound.io/example-id: snowflake/v1alpha1/role
+  labels:
+    testing.upbound.io/example-name: role
+  name: role
+spec:
+  forProvider:
+    comment: A role.
