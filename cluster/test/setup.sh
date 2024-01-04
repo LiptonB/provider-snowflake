@@ -13,7 +13,7 @@ ${KUBECTL} -n upbound-system wait --for=condition=Available deployment --all --t
 
 echo "Creating a default provider config..."
 cat <<EOF | ${KUBECTL} apply -f -
-apiVersion: snowflake.benjaminlipton.com/v1alpha1
+apiVersion: snowflake.crossplane.io/v1alpha1
 kind: ProviderConfig
 metadata:
   name: default

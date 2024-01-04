@@ -13,7 +13,7 @@ import (
 
 // Package type metadata.
 const (
-	Group   = "snowflake.benjaminlipton.com"
+	Group   = "snowflake.crossplane.io"
 	Version = "v1beta1"
 )
 

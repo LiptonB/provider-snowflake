@@ -1,4 +1,4 @@
-apiVersion: snowflake.benjaminlipton.com/v1alpha1
+apiVersion: snowflake.crossplane.io/v1alpha1
 kind: Share
 metadata:
   name: test-share
