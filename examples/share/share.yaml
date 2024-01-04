@@ -1,0 +1,7 @@
+apiVersion: snowflake.benjaminlipton.com/v1alpha1
+kind: Share
+metadata:
+  name: test-share
+spec:
+  forProvider:
+    comment: cool comment
