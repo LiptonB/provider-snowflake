@@ -13,3 +13,19 @@ spec:
       name: example-schema
     statement: |
       select * from SNOWFLAKE_SAMPLE_DATA.TPCDS_SF100TCL.CUSTOMER;
+---
+apiVersion: snowflake.crossplane.io/v1alpha1
+kind: View
+metadata:
+  name: example-secure-view
+spec:
+  forProvider:
+    comment: comment
+    databaseRef:
+      name: example-db
+    isSecure: true
+    orReplace: false
+    schemaRef:
+      name: example-schema
+    statement: |
+      select * from SNOWFLAKE_SAMPLE_DATA.TPCDS_SF100TCL.CUSTOMER;
