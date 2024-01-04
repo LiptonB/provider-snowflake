@@ -9,5 +9,5 @@ metadata:
 spec:
   forProvider:
     accounts:
-      - organizationName.accountName
+    - organizationName.accountName
     comment: cool comment
