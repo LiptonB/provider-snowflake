@@ -14,6 +14,7 @@ import (
 	role "github.com/LiptonB/provider-snowflake/internal/controller/snowflake/role"
 	schema "github.com/LiptonB/provider-snowflake/internal/controller/snowflake/schema"
 	share "github.com/LiptonB/provider-snowflake/internal/controller/snowflake/share"
+	user "github.com/LiptonB/provider-snowflake/internal/controller/snowflake/user"
 	view "github.com/LiptonB/provider-snowflake/internal/controller/snowflake/view"
 	warehouse "github.com/LiptonB/provider-snowflake/internal/controller/snowflake/warehouse"
 )
@@ -27,6 +28,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		role.Setup,
 		schema.Setup,
 		share.Setup,
+		user.Setup,
 		view.Setup,
 		warehouse.Setup,
 	} {

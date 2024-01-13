@@ -10,11 +10,12 @@ import "github.com/crossplane/upjet/pkg/config"
 // provider.
 var ExternalNameConfigs = map[string]config.ExternalName{
 	"snowflake_database":  config.NameAsIdentifier,
+	"snowflake_role":      config.NameAsIdentifier,
 	"snowflake_schema":    config.TemplatedStringAsIdentifier("name", "{{ .parameters.database }}|{{ .external_name }}"),
+	"snowflake_share":     config.NameAsIdentifier,
+	"snowflake_user":      config.NameAsIdentifier,
 	"snowflake_view":      config.TemplatedStringAsIdentifier("name", "{{ .parameters.database }}|{{ .parameters.schema }}|{{ .external_name }}"),
 	"snowflake_warehouse": config.NameAsIdentifier,
-	"snowflake_role":      config.NameAsIdentifier,
-	"snowflake_share":     config.NameAsIdentifier,
 }
 
 // ExternalNameConfigurations applies all external name configs listed in the

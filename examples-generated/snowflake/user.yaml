@@ -1,0 +1,40 @@
+apiVersion: snowflake.crossplane.io/v1alpha1
+kind: User
+metadata:
+  annotations:
+    meta.upbound.io/example-id: snowflake/v1alpha1/user
+  labels:
+    testing.upbound.io/example-name: user
+  name: user
+spec:
+  forProvider:
+    comment: A user of snowflake.
+    defaultRole: role1
+    defaultSecondaryRoles:
+    - ALL
+    defaultWarehouse: warehouse
+    disabled: false
+    displayNameSecretRef:
+      key: example-key
+      name: example-secret
+      namespace: upbound-system
+    emailSecretRef:
+      key: example-key
+      name: example-secret
+      namespace: upbound-system
+    firstNameSecretRef:
+      key: example-key
+      name: example-secret
+      namespace: upbound-system
+    lastNameSecretRef:
+      key: example-key
+      name: example-secret
+      namespace: upbound-system
+    loginName: snowflake_user
+    mustChangePassword: false
+    passwordSecretRef:
+      key: example-key
+      name: example-secret
+      namespace: upbound-system
+    rsaPublicKey: '...'
+    rsaPublicKey2: '...'
