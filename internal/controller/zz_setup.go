@@ -9,6 +9,7 @@ import (
 
 	"github.com/crossplane/upjet/pkg/controller"
 
+	grant "github.com/LiptonB/provider-snowflake/internal/controller/database/grant"
 	providerconfig "github.com/LiptonB/provider-snowflake/internal/controller/providerconfig"
 	database "github.com/LiptonB/provider-snowflake/internal/controller/snowflake/database"
 	role "github.com/LiptonB/provider-snowflake/internal/controller/snowflake/role"
@@ -23,6 +24,7 @@ import (
 // the supplied manager.
 func Setup(mgr ctrl.Manager, o controller.Options) error {
 	for _, setup := range []func(ctrl.Manager, controller.Options) error{
+		grant.Setup,
 		providerconfig.Setup,
 		database.Setup,
 		role.Setup,

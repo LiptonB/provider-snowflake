@@ -1,0 +1,19 @@
+apiVersion: database.crossplane.io/v1alpha1
+kind: Grant
+metadata:
+  annotations:
+    meta.upbound.io/example-id: database/v1alpha1/grant
+  labels:
+    testing.upbound.io/example-name: grant
+  name: grant
+spec:
+  forProvider:
+    databaseName: database
+    privilege: USAGE
+    roles:
+    - role1
+    - role2
+    shares:
+    - share1
+    - share2
+    withGrantOption: false
