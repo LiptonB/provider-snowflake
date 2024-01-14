@@ -26,6 +26,28 @@ func Configure(p *config.Provider) {
 		}
 	})
 
+	p.AddResourceConfigurator("snowflake_role_grants", func(r *config.Resource) {
+		r.ShortGroup = "grant"
+		r.Kind = "RoleGrant"
+		r.References = config.References{
+			"role_name": {
+				Type:              "github.com/LiptonB/provider-snowflake/apis/snowflake/v1alpha1.Role",
+				RefFieldName:      "RoleRef",
+				SelectorFieldName: "RoleSelector",
+			},
+			"roles": {
+				Type:              "github.com/LiptonB/provider-snowflake/apis/snowflake/v1alpha1.Role",
+				RefFieldName:      "MemberRoleRefs",
+				SelectorFieldName: "MemberRoleSelector",
+			},
+			"users": {
+				Type:              "github.com/LiptonB/provider-snowflake/apis/snowflake/v1alpha1.User",
+				RefFieldName:      "MemberUserRefs",
+				SelectorFieldName: "MemberUserSelector",
+			},
+		}
+	})
+
 	p.AddResourceConfigurator("snowflake_schema_grant", func(r *config.Resource) {
 		r.ShortGroup = "grant"
 		r.Kind = "SchemaGrant"

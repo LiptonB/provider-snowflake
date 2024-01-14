@@ -72,6 +72,65 @@ func (mg *DatabaseGrant) ResolveReferences(ctx context.Context, c client.Reader)
 	return nil
 }
 
+// ResolveReferences of this RoleGrant.
+func (mg *RoleGrant) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var mrsp reference.MultiResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.RoleName),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.RoleRef,
+		Selector:     mg.Spec.ForProvider.RoleSelector,
+		To: reference.To{
+			List:    &v1alpha1.RoleList{},
+			Managed: &v1alpha1.Role{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.RoleName")
+	}
+	mg.Spec.ForProvider.RoleName = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.RoleRef = rsp.ResolvedReference
+
+	mrsp, err = r.ResolveMultiple(ctx, reference.MultiResolutionRequest{
+		CurrentValues: reference.FromPtrValues(mg.Spec.ForProvider.Roles),
+		Extract:       reference.ExternalName(),
+		References:    mg.Spec.ForProvider.MemberRoleRefs,
+		Selector:      mg.Spec.ForProvider.MemberRoleSelector,
+		To: reference.To{
+			List:    &v1alpha1.RoleList{},
+			Managed: &v1alpha1.Role{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.Roles")
+	}
+	mg.Spec.ForProvider.Roles = reference.ToPtrValues(mrsp.ResolvedValues)
+	mg.Spec.ForProvider.MemberRoleRefs = mrsp.ResolvedReferences
+
+	mrsp, err = r.ResolveMultiple(ctx, reference.MultiResolutionRequest{
+		CurrentValues: reference.FromPtrValues(mg.Spec.ForProvider.Users),
+		Extract:       reference.ExternalName(),
+		References:    mg.Spec.ForProvider.MemberUserRefs,
+		Selector:      mg.Spec.ForProvider.MemberUserSelector,
+		To: reference.To{
+			List:    &v1alpha1.UserList{},
+			Managed: &v1alpha1.User{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.Users")
+	}
+	mg.Spec.ForProvider.Users = reference.ToPtrValues(mrsp.ResolvedValues)
+	mg.Spec.ForProvider.MemberUserRefs = mrsp.ResolvedReferences
+
+	return nil
+}
+
 // ResolveReferences of this SchemaGrant.
 func (mg *SchemaGrant) ResolveReferences(ctx context.Context, c client.Reader) error {
 	r := reference.NewAPIResolver(c, mg)
