@@ -1,0 +1,25 @@
+apiVersion: grant.snowflake.crossplane.io/v1alpha1
+kind: SchemaGrant
+metadata:
+  annotations:
+    meta.upbound.io/example-id: grant/v1alpha1/schemagrant
+  labels:
+    testing.upbound.io/example-name: grant
+  name: grant
+spec:
+  forProvider:
+    databaseSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    onFuture: false
+    privilege: USAGE
+    roleRefs:
+    - name: example
+    - name: example
+    schemaSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    shareRefs:
+    - name: example
+    - name: example
+    withGrantOption: false

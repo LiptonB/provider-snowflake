@@ -13,6 +13,7 @@ var ExternalNameConfigs = map[string]config.ExternalName{
 	"snowflake_database_grant": config.IdentifierFromProvider,
 	"snowflake_role":           config.NameAsIdentifier,
 	"snowflake_schema":         config.TemplatedStringAsIdentifier("name", "{{ .parameters.database }}|{{ .external_name }}"),
+	"snowflake_schema_grant":   config.IdentifierFromProvider,
 	"snowflake_share":          config.NameAsIdentifier,
 	"snowflake_user":           config.NameAsIdentifier,
 	"snowflake_view":           config.TemplatedStringAsIdentifier("name", "{{ .parameters.database }}|{{ .parameters.schema }}|{{ .external_name }}"),

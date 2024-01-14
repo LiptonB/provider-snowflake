@@ -71,3 +71,78 @@ func (mg *DatabaseGrant) ResolveReferences(ctx context.Context, c client.Reader)
 
 	return nil
 }
+
+// ResolveReferences of this SchemaGrant.
+func (mg *SchemaGrant) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var mrsp reference.MultiResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.DatabaseName),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.DatabaseRef,
+		Selector:     mg.Spec.ForProvider.DatabaseSelector,
+		To: reference.To{
+			List:    &v1alpha1.DatabaseList{},
+			Managed: &v1alpha1.Database{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.DatabaseName")
+	}
+	mg.Spec.ForProvider.DatabaseName = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.DatabaseRef = rsp.ResolvedReference
+
+	mrsp, err = r.ResolveMultiple(ctx, reference.MultiResolutionRequest{
+		CurrentValues: reference.FromPtrValues(mg.Spec.ForProvider.Roles),
+		Extract:       reference.ExternalName(),
+		References:    mg.Spec.ForProvider.RoleRefs,
+		Selector:      mg.Spec.ForProvider.RoleSelector,
+		To: reference.To{
+			List:    &v1alpha1.RoleList{},
+			Managed: &v1alpha1.Role{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.Roles")
+	}
+	mg.Spec.ForProvider.Roles = reference.ToPtrValues(mrsp.ResolvedValues)
+	mg.Spec.ForProvider.RoleRefs = mrsp.ResolvedReferences
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.SchemaName),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.SchemaRef,
+		Selector:     mg.Spec.ForProvider.SchemaSelector,
+		To: reference.To{
+			List:    &v1alpha1.SchemaList{},
+			Managed: &v1alpha1.Schema{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.SchemaName")
+	}
+	mg.Spec.ForProvider.SchemaName = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.SchemaRef = rsp.ResolvedReference
+
+	mrsp, err = r.ResolveMultiple(ctx, reference.MultiResolutionRequest{
+		CurrentValues: reference.FromPtrValues(mg.Spec.ForProvider.Shares),
+		Extract:       reference.ExternalName(),
+		References:    mg.Spec.ForProvider.ShareRefs,
+		Selector:      mg.Spec.ForProvider.ShareSelector,
+		To: reference.To{
+			List:    &v1alpha1.ShareList{},
+			Managed: &v1alpha1.Share{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.Shares")
+	}
+	mg.Spec.ForProvider.Shares = reference.ToPtrValues(mrsp.ResolvedValues)
+	mg.Spec.ForProvider.ShareRefs = mrsp.ResolvedReferences
+
+	return nil
+}
