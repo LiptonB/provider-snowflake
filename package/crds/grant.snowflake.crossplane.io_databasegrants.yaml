@@ -4,9 +4,9 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.13.0
-  name: databasegrants.snowflake.snowflake.crossplane.io
+  name: databasegrants.grant.snowflake.crossplane.io
 spec:
-  group: snowflake.snowflake.crossplane.io
+  group: grant.snowflake.crossplane.io
   names:
     categories:
     - crossplane

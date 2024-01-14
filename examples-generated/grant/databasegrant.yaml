@@ -1,8 +1,8 @@
-apiVersion: snowflake.snowflake.crossplane.io/v1alpha1
+apiVersion: grant.snowflake.crossplane.io/v1alpha1
 kind: DatabaseGrant
 metadata:
   annotations:
-    meta.upbound.io/example-id: snowflake/v1alpha1/databasegrant
+    meta.upbound.io/example-id: grant/v1alpha1/databasegrant
   labels:
     testing.upbound.io/example-name: grant
   name: grant

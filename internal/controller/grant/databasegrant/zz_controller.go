@@ -23,7 +23,7 @@ import (
 	"github.com/crossplane/upjet/pkg/terraform"
 	ctrl "sigs.k8s.io/controller-runtime"
 
-	v1alpha1 "github.com/LiptonB/provider-snowflake/apis/snowflake/v1alpha1"
+	v1alpha1 "github.com/LiptonB/provider-snowflake/apis/grant/v1alpha1"
 	features "github.com/LiptonB/provider-snowflake/internal/features"
 )
 
