@@ -8,12 +8,14 @@ metadata:
   name: grant
 spec:
   forProvider:
-    databaseName: database
+    databaseSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
     privilege: USAGE
-    roles:
-    - role1
-    - role2
-    shares:
-    - share1
-    - share2
+    roleRefs:
+    - name: example
+    - name: example
+    shareRefs:
+    - name: example
+    - name: example
     withGrantOption: false

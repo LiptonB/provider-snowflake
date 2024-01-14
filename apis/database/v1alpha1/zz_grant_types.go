@@ -19,10 +19,6 @@ import (
 
 type GrantInitParameters struct {
 
-	// (String) The name of the database on which to grant privileges.
-	// The name of the database on which to grant privileges.
-	DatabaseName *string `json:"databaseName,omitempty" tf:"database_name,omitempty"`
-
 	// (Boolean) When this is set to true, multiple grants of the same type can be created.
 	// When this is set to true, multiple grants of the same type can be created.
 	EnableMultipleGrants *bool `json:"enableMultipleGrants,omitempty" tf:"enable_multiple_grants,omitempty"`
@@ -34,14 +30,6 @@ type GrantInitParameters struct {
 	// (String) The name of the role to revert ownership to on destroy. Has no effect unless privilege is set to OWNERSHIP
 	// The name of the role to revert ownership to on destroy. Has no effect unless `privilege` is set to `OWNERSHIP`
 	RevertOwnershipToRoleName *string `json:"revertOwnershipToRoleName,omitempty" tf:"revert_ownership_to_role_name,omitempty"`
-
-	// (Set of String) Grants privilege to these roles.
-	// Grants privilege to these roles.
-	Roles []*string `json:"roles,omitempty" tf:"roles,omitempty"`
-
-	// (Set of String) Grants privilege to these shares.
-	// Grants privilege to these shares.
-	Shares []*string `json:"shares,omitempty" tf:"shares,omitempty"`
 
 	// (Boolean) When this is set to true, allows the recipient role to grant the privileges to other roles.
 	// When this is set to true, allows the recipient role to grant the privileges to other roles.
@@ -86,8 +74,19 @@ type GrantParameters struct {
 
 	// (String) The name of the database on which to grant privileges.
 	// The name of the database on which to grant privileges.
+	// +crossplane:generate:reference:type=github.com/LiptonB/provider-snowflake/apis/snowflake/v1alpha1.Database
+	// +crossplane:generate:reference:refFieldName=DatabaseRef
+	// +crossplane:generate:reference:selectorFieldName=DatabaseSelector
 	// +kubebuilder:validation:Optional
 	DatabaseName *string `json:"databaseName,omitempty" tf:"database_name,omitempty"`
+
+	// Reference to a Database in snowflake to populate databaseName.
+	// +kubebuilder:validation:Optional
+	DatabaseRef *v1.Reference `json:"databaseRef,omitempty" tf:"-"`
+
+	// Selector for a Database in snowflake to populate databaseName.
+	// +kubebuilder:validation:Optional
+	DatabaseSelector *v1.Selector `json:"databaseSelector,omitempty" tf:"-"`
 
 	// (Boolean) When this is set to true, multiple grants of the same type can be created.
 	// When this is set to true, multiple grants of the same type can be created.
@@ -104,13 +103,35 @@ type GrantParameters struct {
 	// +kubebuilder:validation:Optional
 	RevertOwnershipToRoleName *string `json:"revertOwnershipToRoleName,omitempty" tf:"revert_ownership_to_role_name,omitempty"`
 
+	// References to Role in snowflake to populate roles.
+	// +kubebuilder:validation:Optional
+	RoleRefs []v1.Reference `json:"roleRefs,omitempty" tf:"-"`
+
+	// Selector for a list of Role in snowflake to populate roles.
+	// +kubebuilder:validation:Optional
+	RoleSelector *v1.Selector `json:"roleSelector,omitempty" tf:"-"`
+
 	// (Set of String) Grants privilege to these roles.
 	// Grants privilege to these roles.
+	// +crossplane:generate:reference:type=github.com/LiptonB/provider-snowflake/apis/snowflake/v1alpha1.Role
+	// +crossplane:generate:reference:refFieldName=RoleRefs
+	// +crossplane:generate:reference:selectorFieldName=RoleSelector
 	// +kubebuilder:validation:Optional
 	Roles []*string `json:"roles,omitempty" tf:"roles,omitempty"`
 
+	// References to Share in snowflake to populate shares.
+	// +kubebuilder:validation:Optional
+	ShareRefs []v1.Reference `json:"shareRefs,omitempty" tf:"-"`
+
+	// Selector for a list of Share in snowflake to populate shares.
+	// +kubebuilder:validation:Optional
+	ShareSelector *v1.Selector `json:"shareSelector,omitempty" tf:"-"`
+
 	// (Set of String) Grants privilege to these shares.
 	// Grants privilege to these shares.
+	// +crossplane:generate:reference:type=github.com/LiptonB/provider-snowflake/apis/snowflake/v1alpha1.Share
+	// +crossplane:generate:reference:refFieldName=ShareRefs
+	// +crossplane:generate:reference:selectorFieldName=ShareSelector
 	// +kubebuilder:validation:Optional
 	Shares []*string `json:"shares,omitempty" tf:"shares,omitempty"`
 
@@ -155,9 +176,8 @@ type GrantStatus struct {
 type Grant struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.databaseName) || (has(self.initProvider) && has(self.initProvider.databaseName))",message="spec.forProvider.databaseName is a required parameter"
-	Spec   GrantSpec   `json:"spec"`
-	Status GrantStatus `json:"status,omitempty"`
+	Spec              GrantSpec   `json:"spec"`
+	Status            GrantStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true
