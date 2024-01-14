@@ -4,18 +4,18 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.13.0
-  name: roles.snowflake.crossplane.io
+  name: shares.snowflake.snowflake.crossplane.io
 spec:
-  group: snowflake.crossplane.io
+  group: snowflake.snowflake.crossplane.io
   names:
     categories:
     - crossplane
     - managed
     - snowflake
-    kind: Role
-    listKind: RoleList
-    plural: roles
-    singular: role
+    kind: Share
+    listKind: ShareList
+    plural: shares
+    singular: share
   scope: Cluster
   versions:
   - additionalPrinterColumns:
@@ -34,7 +34,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: Role is the Schema for the Roles API.
+        description: Share is the Schema for the Shares API.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -49,7 +49,7 @@ spec:
           metadata:
             type: object
           spec:
-            description: RoleSpec defines the desired state of Role
+            description: ShareSpec defines the desired state of Share
             properties:
               deletionPolicy:
                 default: Delete
@@ -66,34 +66,19 @@ spec:
                 type: string
               forProvider:
                 properties:
-                  comment:
-                    description: (String)
-                    type: string
-                  tag:
-                    description: (Block List, Deprecated) Definitions of a tag to
-                      associate with the resource. (see below for nested schema) Definitions
-                      of a tag to associate with the resource.
+                  accounts:
+                    description: (List of String) A list of accounts to be added to
+                      the share. Values should not be the account locator, but in
+                      the form of 'organization_name.account_name A list of accounts
+                      to be added to the share. Values should not be the account locator,
+                      but in the form of 'organization_name.account_name
                     items:
-                      properties:
-                        database:
-                          description: (String) Name of the database that the tag
-                            was created in. Name of the database that the tag was
-                            created in.
-                          type: string
-                        name:
-                          description: (String) Tag name, e.g. department.
-                          type: string
-                        schema:
-                          description: (String) Name of the schema that the tag was
-                            created in. Name of the schema that the tag was created
-                            in.
-                          type: string
-                        value:
-                          description: (String) Tag value, e.g. marketing_info. Tag
-                            value, e.g. marketing_info.
-                          type: string
-                      type: object
+                      type: string
                     type: array
+                  comment:
+                    description: (String) Specifies a comment for the managed account.
+                      Specifies a comment for the managed account.
+                    type: string
                 type: object
               initProvider:
                 description: THIS IS A BETA FIELD. It will be honored unless the Management
@@ -107,34 +92,19 @@ spec:
                   for example because of an external controller is managing them,
                   like an autoscaler.
                 properties:
-                  comment:
-                    description: (String)
-                    type: string
-                  tag:
-                    description: (Block List, Deprecated) Definitions of a tag to
-                      associate with the resource. (see below for nested schema) Definitions
-                      of a tag to associate with the resource.
+                  accounts:
+                    description: (List of String) A list of accounts to be added to
+                      the share. Values should not be the account locator, but in
+                      the form of 'organization_name.account_name A list of accounts
+                      to be added to the share. Values should not be the account locator,
+                      but in the form of 'organization_name.account_name
                     items:
-                      properties:
-                        database:
-                          description: (String) Name of the database that the tag
-                            was created in. Name of the database that the tag was
-                            created in.
-                          type: string
-                        name:
-                          description: (String) Tag name, e.g. department.
-                          type: string
-                        schema:
-                          description: (String) Name of the schema that the tag was
-                            created in. Name of the schema that the tag was created
-                            in.
-                          type: string
-                        value:
-                          description: (String) Tag value, e.g. marketing_info. Tag
-                            value, e.g. marketing_info.
-                          type: string
-                      type: object
+                      type: string
                     type: array
+                  comment:
+                    description: (String) Specifies a comment for the managed account.
+                      Specifies a comment for the managed account.
+                    type: string
                 type: object
               managementPolicies:
                 default:
@@ -297,41 +267,26 @@ spec:
             - forProvider
             type: object
           status:
-            description: RoleStatus defines the observed state of Role.
+            description: ShareStatus defines the observed state of Share.
             properties:
               atProvider:
                 properties:
+                  accounts:
+                    description: (List of String) A list of accounts to be added to
+                      the share. Values should not be the account locator, but in
+                      the form of 'organization_name.account_name A list of accounts
+                      to be added to the share. Values should not be the account locator,
+                      but in the form of 'organization_name.account_name
+                    items:
+                      type: string
+                    type: array
                   comment:
-                    description: (String)
+                    description: (String) Specifies a comment for the managed account.
+                      Specifies a comment for the managed account.
                     type: string
                   id:
                     description: (String) The ID of this resource.
                     type: string
-                  tag:
-                    description: (Block List, Deprecated) Definitions of a tag to
-                      associate with the resource. (see below for nested schema) Definitions
-                      of a tag to associate with the resource.
-                    items:
-                      properties:
-                        database:
-                          description: (String) Name of the database that the tag
-                            was created in. Name of the database that the tag was
-                            created in.
-                          type: string
-                        name:
-                          description: (String) Tag name, e.g. department.
-                          type: string
-                        schema:
-                          description: (String) Name of the schema that the tag was
-                            created in. Name of the schema that the tag was created
-                            in.
-                          type: string
-                        value:
-                          description: (String) Tag value, e.g. marketing_info. Tag
-                            value, e.g. marketing_info.
-                          type: string
-                      type: object
-                    type: array
                 type: object
               conditions:
                 description: Conditions of the resource.

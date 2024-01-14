@@ -4,18 +4,18 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.13.0
-  name: schemas.snowflake.crossplane.io
+  name: databasegrants.snowflake.snowflake.crossplane.io
 spec:
-  group: snowflake.crossplane.io
+  group: snowflake.snowflake.crossplane.io
   names:
     categories:
     - crossplane
     - managed
     - snowflake
-    kind: Schema
-    listKind: SchemaList
-    plural: schemas
-    singular: schema
+    kind: DatabaseGrant
+    listKind: DatabaseGrantList
+    plural: databasegrants
+    singular: databasegrant
   scope: Cluster
   versions:
   - additionalPrinterColumns:
@@ -34,7 +34,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: Schema is the Schema for the Schemas API.
+        description: DatabaseGrant is the Schema for the DatabaseGrants API.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -49,7 +49,7 @@ spec:
           metadata:
             type: object
           spec:
-            description: SchemaSpec defines the desired state of Schema
+            description: DatabaseGrantSpec defines the desired state of DatabaseGrant
             properties:
               deletionPolicy:
                 default: Delete
@@ -66,26 +66,13 @@ spec:
                 type: string
               forProvider:
                 properties:
-                  comment:
-                    description: (String) Specifies a comment for the schema. Specifies
-                      a comment for the schema.
-                    type: string
-                  dataRetentionDays:
-                    description: (Number) Specifies the number of days for which Time
-                      Travel actions (CLONE and UNDROP) can be performed on the schema,
-                      as well as specifying the default Time Travel retention time
-                      for all tables created in the schema. Specifies the number of
-                      days for which Time Travel actions (CLONE and UNDROP) can be
-                      performed on the schema, as well as specifying the default Time
-                      Travel retention time for all tables created in the schema.
-                    type: number
-                  database:
-                    description: (String) The database in which to create the schema.
-                      The database in which to create the schema.
+                  databaseName:
+                    description: (String) The name of the database on which to grant
+                      privileges. The name of the database on which to grant privileges.
                     type: string
                   databaseRef:
                     description: Reference to a Database in snowflake to populate
-                      database.
+                      databaseName.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -120,7 +107,7 @@ spec:
                     type: object
                   databaseSelector:
                     description: Selector for a Database in snowflake to populate
-                      database.
+                      databaseName.
                     properties:
                       matchControllerRef:
                         description: MatchControllerRef ensures an object with the
@@ -158,48 +145,195 @@ spec:
                             type: string
                         type: object
                     type: object
-                  isManaged:
-                    description: (Boolean) Specifies a managed schema. Managed access
-                      schemas centralize privilege management with the schema owner.
-                      Specifies a managed schema. Managed access schemas centralize
-                      privilege management with the schema owner.
+                  enableMultipleGrants:
+                    description: (Boolean) When this is set to true, multiple grants
+                      of the same type can be created. When this is set to true, multiple
+                      grants of the same type can be created.
                     type: boolean
-                  isTransient:
-                    description: safe period so they do not incur additional storage
-                      costs once they leave Time Travel; however, this means they
-                      are also not protected by Fail-safe in the event of a data loss.
-                      Specifies a schema as transient. Transient schemas do not have
-                      a Fail-safe period so they do not incur additional storage costs
-                      once they leave Time Travel; however, this means they are also
-                      not protected by Fail-safe in the event of a data loss.
-                    type: boolean
-                  tag:
-                    description: (Block List, Deprecated) Definitions of a tag to
-                      associate with the resource. (see below for nested schema) Definitions
-                      of a tag to associate with the resource.
+                  privilege:
+                    description: (String) The privilege to grant on the database.
+                      To grant all privileges, use the value ALL PRIVILEGES. The privilege
+                      to grant on the database. To grant all privileges, use the value
+                      `ALL PRIVILEGES`.
+                    type: string
+                  revertOwnershipToRoleName:
+                    description: (String) The name of the role to revert ownership
+                      to on destroy. Has no effect unless privilege is set to OWNERSHIP
+                      The name of the role to revert ownership to on destroy. Has
+                      no effect unless `privilege` is set to `OWNERSHIP`
+                    type: string
+                  roleRefs:
+                    description: References to Role in snowflake to populate roles.
                     items:
+                      description: A Reference to a named object.
                       properties:
-                        database:
-                          description: (String) The database in which to create the
-                            schema. Name of the database that the tag was created
-                            in.
-                          type: string
                         name:
-                          description: (String) Specifies the identifier for the schema;
-                            must be unique for the database in which the schema is
-                            created. Tag name, e.g. department.
+                          description: Name of the referenced object.
                           type: string
-                        schema:
-                          description: (String) Name of the schema that the tag was
-                            created in. Name of the schema that the tag was created
-                            in.
-                          type: string
-                        value:
-                          description: (String) Tag value, e.g. marketing_info. Tag
-                            value, e.g. marketing_info.
-                          type: string
+                        policy:
+                          description: Policies for referencing.
+                          properties:
+                            resolution:
+                              default: Required
+                              description: Resolution specifies whether resolution
+                                of this reference is required. The default is 'Required',
+                                which means the reconcile will fail if the reference
+                                cannot be resolved. 'Optional' means this reference
+                                will be a no-op if it cannot be resolved.
+                              enum:
+                              - Required
+                              - Optional
+                              type: string
+                            resolve:
+                              description: Resolve specifies when this reference should
+                                be resolved. The default is 'IfNotPresent', which
+                                will attempt to resolve the reference only when the
+                                corresponding field is not present. Use 'Always' to
+                                resolve the reference on every reconcile.
+                              enum:
+                              - Always
+                              - IfNotPresent
+                              type: string
+                          type: object
+                      required:
+                      - name
                       type: object
                     type: array
+                  roleSelector:
+                    description: Selector for a list of Role in snowflake to populate
+                      roles.
+                    properties:
+                      matchControllerRef:
+                        description: MatchControllerRef ensures an object with the
+                          same controller reference as the selecting object is selected.
+                        type: boolean
+                      matchLabels:
+                        additionalProperties:
+                          type: string
+                        description: MatchLabels ensures an object with matching labels
+                          is selected.
+                        type: object
+                      policy:
+                        description: Policies for selection.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    type: object
+                  roles:
+                    description: (Set of String) Grants privilege to these roles.
+                      Grants privilege to these roles.
+                    items:
+                      type: string
+                    type: array
+                  shareRefs:
+                    description: References to Share in snowflake to populate shares.
+                    items:
+                      description: A Reference to a named object.
+                      properties:
+                        name:
+                          description: Name of the referenced object.
+                          type: string
+                        policy:
+                          description: Policies for referencing.
+                          properties:
+                            resolution:
+                              default: Required
+                              description: Resolution specifies whether resolution
+                                of this reference is required. The default is 'Required',
+                                which means the reconcile will fail if the reference
+                                cannot be resolved. 'Optional' means this reference
+                                will be a no-op if it cannot be resolved.
+                              enum:
+                              - Required
+                              - Optional
+                              type: string
+                            resolve:
+                              description: Resolve specifies when this reference should
+                                be resolved. The default is 'IfNotPresent', which
+                                will attempt to resolve the reference only when the
+                                corresponding field is not present. Use 'Always' to
+                                resolve the reference on every reconcile.
+                              enum:
+                              - Always
+                              - IfNotPresent
+                              type: string
+                          type: object
+                      required:
+                      - name
+                      type: object
+                    type: array
+                  shareSelector:
+                    description: Selector for a list of Share in snowflake to populate
+                      shares.
+                    properties:
+                      matchControllerRef:
+                        description: MatchControllerRef ensures an object with the
+                          same controller reference as the selecting object is selected.
+                        type: boolean
+                      matchLabels:
+                        additionalProperties:
+                          type: string
+                        description: MatchLabels ensures an object with matching labels
+                          is selected.
+                        type: object
+                      policy:
+                        description: Policies for selection.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    type: object
+                  shares:
+                    description: (Set of String) Grants privilege to these shares.
+                      Grants privilege to these shares.
+                    items:
+                      type: string
+                    type: array
+                  withGrantOption:
+                    description: (Boolean) When this is set to true, allows the recipient
+                      role to grant the privileges to other roles. When this is set
+                      to true, allows the recipient role to grant the privileges to
+                      other roles.
+                    type: boolean
                 type: object
               initProvider:
                 description: THIS IS A BETA FIELD. It will be honored unless the Management
@@ -213,56 +347,29 @@ spec:
                   for example because of an external controller is managing them,
                   like an autoscaler.
                 properties:
-                  comment:
-                    description: (String) Specifies a comment for the schema. Specifies
-                      a comment for the schema.
+                  enableMultipleGrants:
+                    description: (Boolean) When this is set to true, multiple grants
+                      of the same type can be created. When this is set to true, multiple
+                      grants of the same type can be created.
+                    type: boolean
+                  privilege:
+                    description: (String) The privilege to grant on the database.
+                      To grant all privileges, use the value ALL PRIVILEGES. The privilege
+                      to grant on the database. To grant all privileges, use the value
+                      `ALL PRIVILEGES`.
                     type: string
-                  dataRetentionDays:
-                    description: (Number) Specifies the number of days for which Time
-                      Travel actions (CLONE and UNDROP) can be performed on the schema,
-                      as well as specifying the default Time Travel retention time
-                      for all tables created in the schema. Specifies the number of
-                      days for which Time Travel actions (CLONE and UNDROP) can be
-                      performed on the schema, as well as specifying the default Time
-                      Travel retention time for all tables created in the schema.
-                    type: number
-                  isManaged:
-                    description: (Boolean) Specifies a managed schema. Managed access
-                      schemas centralize privilege management with the schema owner.
-                      Specifies a managed schema. Managed access schemas centralize
-                      privilege management with the schema owner.
+                  revertOwnershipToRoleName:
+                    description: (String) The name of the role to revert ownership
+                      to on destroy. Has no effect unless privilege is set to OWNERSHIP
+                      The name of the role to revert ownership to on destroy. Has
+                      no effect unless `privilege` is set to `OWNERSHIP`
+                    type: string
+                  withGrantOption:
+                    description: (Boolean) When this is set to true, allows the recipient
+                      role to grant the privileges to other roles. When this is set
+                      to true, allows the recipient role to grant the privileges to
+                      other roles.
                     type: boolean
-                  isTransient:
-                    description: safe period so they do not incur additional storage
-                      costs once they leave Time Travel; however, this means they
-                      are also not protected by Fail-safe in the event of a data loss.
-                      Specifies a schema as transient. Transient schemas do not have
-                      a Fail-safe period so they do not incur additional storage costs
-                      once they leave Time Travel; however, this means they are also
-                      not protected by Fail-safe in the event of a data loss.
-                    type: boolean
-                  tag:
-                    description: (Block List, Deprecated) Definitions of a tag to
-                      associate with the resource. (see below for nested schema) Definitions
-                      of a tag to associate with the resource.
-                    items:
-                      properties:
-                        name:
-                          description: (String) Specifies the identifier for the schema;
-                            must be unique for the database in which the schema is
-                            created. Tag name, e.g. department.
-                          type: string
-                        schema:
-                          description: (String) Name of the schema that the tag was
-                            created in. Name of the schema that the tag was created
-                            in.
-                          type: string
-                        value:
-                          description: (String) Tag value, e.g. marketing_info. Tag
-                            value, e.g. marketing_info.
-                          type: string
-                      type: object
-                    type: array
                 type: object
               managementPolicies:
                 default:
@@ -425,72 +532,52 @@ spec:
             - forProvider
             type: object
           status:
-            description: SchemaStatus defines the observed state of Schema.
+            description: DatabaseGrantStatus defines the observed state of DatabaseGrant.
             properties:
               atProvider:
                 properties:
-                  comment:
-                    description: (String) Specifies a comment for the schema. Specifies
-                      a comment for the schema.
+                  databaseName:
+                    description: (String) The name of the database on which to grant
+                      privileges. The name of the database on which to grant privileges.
                     type: string
-                  dataRetentionDays:
-                    description: (Number) Specifies the number of days for which Time
-                      Travel actions (CLONE and UNDROP) can be performed on the schema,
-                      as well as specifying the default Time Travel retention time
-                      for all tables created in the schema. Specifies the number of
-                      days for which Time Travel actions (CLONE and UNDROP) can be
-                      performed on the schema, as well as specifying the default Time
-                      Travel retention time for all tables created in the schema.
-                    type: number
-                  database:
-                    description: (String) The database in which to create the schema.
-                      The database in which to create the schema.
-                    type: string
+                  enableMultipleGrants:
+                    description: (Boolean) When this is set to true, multiple grants
+                      of the same type can be created. When this is set to true, multiple
+                      grants of the same type can be created.
+                    type: boolean
                   id:
                     description: (String) The ID of this resource.
                     type: string
-                  isManaged:
-                    description: (Boolean) Specifies a managed schema. Managed access
-                      schemas centralize privilege management with the schema owner.
-                      Specifies a managed schema. Managed access schemas centralize
-                      privilege management with the schema owner.
-                    type: boolean
-                  isTransient:
-                    description: safe period so they do not incur additional storage
-                      costs once they leave Time Travel; however, this means they
-                      are also not protected by Fail-safe in the event of a data loss.
-                      Specifies a schema as transient. Transient schemas do not have
-                      a Fail-safe period so they do not incur additional storage costs
-                      once they leave Time Travel; however, this means they are also
-                      not protected by Fail-safe in the event of a data loss.
-                    type: boolean
-                  tag:
-                    description: (Block List, Deprecated) Definitions of a tag to
-                      associate with the resource. (see below for nested schema) Definitions
-                      of a tag to associate with the resource.
+                  privilege:
+                    description: (String) The privilege to grant on the database.
+                      To grant all privileges, use the value ALL PRIVILEGES. The privilege
+                      to grant on the database. To grant all privileges, use the value
+                      `ALL PRIVILEGES`.
+                    type: string
+                  revertOwnershipToRoleName:
+                    description: (String) The name of the role to revert ownership
+                      to on destroy. Has no effect unless privilege is set to OWNERSHIP
+                      The name of the role to revert ownership to on destroy. Has
+                      no effect unless `privilege` is set to `OWNERSHIP`
+                    type: string
+                  roles:
+                    description: (Set of String) Grants privilege to these roles.
+                      Grants privilege to these roles.
                     items:
-                      properties:
-                        database:
-                          description: (String) The database in which to create the
-                            schema. Name of the database that the tag was created
-                            in.
-                          type: string
-                        name:
-                          description: (String) Specifies the identifier for the schema;
-                            must be unique for the database in which the schema is
-                            created. Tag name, e.g. department.
-                          type: string
-                        schema:
-                          description: (String) Name of the schema that the tag was
-                            created in. Name of the schema that the tag was created
-                            in.
-                          type: string
-                        value:
-                          description: (String) Tag value, e.g. marketing_info. Tag
-                            value, e.g. marketing_info.
-                          type: string
-                      type: object
+                      type: string
                     type: array
+                  shares:
+                    description: (Set of String) Grants privilege to these shares.
+                      Grants privilege to these shares.
+                    items:
+                      type: string
+                    type: array
+                  withGrantOption:
+                    description: (Boolean) When this is set to true, allows the recipient
+                      role to grant the privileges to other roles. When this is set
+                      to true, allows the recipient role to grant the privileges to
+                      other roles.
+                    type: boolean
                 type: object
               conditions:
                 description: Conditions of the resource.

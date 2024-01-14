@@ -1,4 +1,4 @@
-apiVersion: snowflake.crossplane.io/v1alpha1
+apiVersion: snowflake.snowflake.crossplane.io/v1alpha1
 kind: Role
 metadata:
   annotations:
