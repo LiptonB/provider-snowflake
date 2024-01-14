@@ -17,7 +17,7 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
-type GrantInitParameters struct {
+type DatabaseGrantInitParameters struct {
 
 	// (Boolean) When this is set to true, multiple grants of the same type can be created.
 	// When this is set to true, multiple grants of the same type can be created.
@@ -36,7 +36,7 @@ type GrantInitParameters struct {
 	WithGrantOption *bool `json:"withGrantOption,omitempty" tf:"with_grant_option,omitempty"`
 }
 
-type GrantObservation struct {
+type DatabaseGrantObservation struct {
 
 	// (String) The name of the database on which to grant privileges.
 	// The name of the database on which to grant privileges.
@@ -70,7 +70,7 @@ type GrantObservation struct {
 	WithGrantOption *bool `json:"withGrantOption,omitempty" tf:"with_grant_option,omitempty"`
 }
 
-type GrantParameters struct {
+type DatabaseGrantParameters struct {
 
 	// (String) The name of the database on which to grant privileges.
 	// The name of the database on which to grant privileges.
@@ -141,10 +141,10 @@ type GrantParameters struct {
 	WithGrantOption *bool `json:"withGrantOption,omitempty" tf:"with_grant_option,omitempty"`
 }
 
-// GrantSpec defines the desired state of Grant
-type GrantSpec struct {
+// DatabaseGrantSpec defines the desired state of DatabaseGrant
+type DatabaseGrantSpec struct {
 	v1.ResourceSpec `json:",inline"`
-	ForProvider     GrantParameters `json:"forProvider"`
+	ForProvider     DatabaseGrantParameters `json:"forProvider"`
 	// THIS IS A BETA FIELD. It will be honored
 	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
@@ -155,48 +155,48 @@ type GrantSpec struct {
 	// required on creation, but we do not desire to update them after creation,
 	// for example because of an external controller is managing them, like an
 	// autoscaler.
-	InitProvider GrantInitParameters `json:"initProvider,omitempty"`
+	InitProvider DatabaseGrantInitParameters `json:"initProvider,omitempty"`
 }
 
-// GrantStatus defines the observed state of Grant.
-type GrantStatus struct {
+// DatabaseGrantStatus defines the observed state of DatabaseGrant.
+type DatabaseGrantStatus struct {
 	v1.ResourceStatus `json:",inline"`
-	AtProvider        GrantObservation `json:"atProvider,omitempty"`
+	AtProvider        DatabaseGrantObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true
 
-// Grant is the Schema for the Grants API.
+// DatabaseGrant is the Schema for the DatabaseGrants API.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
 // +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,snowflake}
-type Grant struct {
+type DatabaseGrant struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              GrantSpec   `json:"spec"`
-	Status            GrantStatus `json:"status,omitempty"`
+	Spec              DatabaseGrantSpec   `json:"spec"`
+	Status            DatabaseGrantStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true
 
-// GrantList contains a list of Grants
-type GrantList struct {
+// DatabaseGrantList contains a list of DatabaseGrants
+type DatabaseGrantList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []Grant `json:"items"`
+	Items           []DatabaseGrant `json:"items"`
 }
 
 // Repository type metadata.
 var (
-	Grant_Kind             = "Grant"
-	Grant_GroupKind        = schema.GroupKind{Group: CRDGroup, Kind: Grant_Kind}.String()
-	Grant_KindAPIVersion   = Grant_Kind + "." + CRDGroupVersion.String()
-	Grant_GroupVersionKind = CRDGroupVersion.WithKind(Grant_Kind)
+	DatabaseGrant_Kind             = "DatabaseGrant"
+	DatabaseGrant_GroupKind        = schema.GroupKind{Group: CRDGroup, Kind: DatabaseGrant_Kind}.String()
+	DatabaseGrant_KindAPIVersion   = DatabaseGrant_Kind + "." + CRDGroupVersion.String()
+	DatabaseGrant_GroupVersionKind = CRDGroupVersion.WithKind(DatabaseGrant_Kind)
 )
 
 func init() {
-	SchemeBuilder.Register(&Grant{}, &GrantList{})
+	SchemeBuilder.Register(&DatabaseGrant{}, &DatabaseGrantList{})
 }
